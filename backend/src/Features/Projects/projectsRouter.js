@@ -69,12 +69,24 @@ app.post("/", async(req, res)=>{
 app.patch("/:id", async (req, res) => {
     let { id } = req.params;
     try {
-        let checkProject = await Project.findOne({ id }); 
-        if (checkProject) {
-            let updateProject = await Project.updateOne({ ...checkProject }, { $set: { status: !checkProject.status } })
-            return res.send(updateProject);
-        }
-        return res.status(404).send("Project Not Found");
+       
+            let updated = await Project.findByIdAndUpdate(id,req.body,{new:true})
+            return res.send(updated);
+    }
+    catch (e) {
+       res.status(500).send(e.message); 
+    }
+})
+
+app.delete("/:id", async (req, res) => {
+    let { id } = req.params;
+    
+    try {
+        
+        let data = await Project.findByIdAndRemove(id,{new:true});
+        console.log(data);
+        return res.send(data);
+        
     }
     catch (e) {
        res.status(500).send(e.message); 

@@ -93,18 +93,30 @@ app.post("/", async(req, res)=>{
 })
 
 app.delete("/:id", async(req, res)=>{
+   
     let { id } = req.params;
+    
     try {
-        let checkClient = await Client.findOne({ id });
-        if (checkClient) {
-            await Client.deleteOne({ id });
-            return res.status(200).send("Deleted Successfully"); 
-        }
         
-        return res.status(404).send("not found");
+        let data = await Client.findByIdAndRemove(id,{new:true});
+        console.log(data);
+        return res.send(data);
+        
     }
     catch (e) {
-        res.status(500).send(e.message);
+       res.status(500).send(e.message); 
+    }
+})
+
+app.patch("/:id", async (req, res) => {
+    let { id } = req.params;
+    try {
+       
+            let updated = await Client.findByIdAndUpdate(id,req.body,{new:true})
+            return res.send(updated);
+    }
+    catch (e) {
+       res.status(500).send(e.message); 
     }
 })
 

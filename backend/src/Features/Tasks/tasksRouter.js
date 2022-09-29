@@ -60,7 +60,7 @@ app.patch("/:id", async (req, res) => {
     
     
     try {
-        console.log(id);
+ 
             let updated = await Tasks.findByIdAndUpdate(id,req.body,{new:true})
             return res.send(updated);
        
@@ -72,13 +72,13 @@ app.patch("/:id", async (req, res) => {
 
 app.delete("/:id", async (req, res) => {
     let { id } = req.params;
+    
     try {
-        let checkTasks = await Tasks.findOne({ id }); 
-        if (checkTasks) {
-            await Project.deleteOne({ id });
-            return res.send("Deleted Successully");
-        }
-        return res.status(404).send("Task Not Found");
+        
+        let data = await Tasks.findByIdAndRemove(id,{new:true});
+        console.log(data);
+        return res.send(data);
+        
     }
     catch (e) {
        res.status(500).send(e.message); 
