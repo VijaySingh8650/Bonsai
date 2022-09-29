@@ -71,20 +71,22 @@ app.get("/:id", async (req, res) => {
 app.post("/", async(req, res)=>{
     let { email,name} = req.body;
     try {
-        let checkClient = await Client.findOne({userId,name,email});
-        console.log(checkClient);
+        // let checkClient = await Client.findOne({userId});
+        // console.log(checkClient);
         
-        if (!checkClient) {
+        // if (!checkClient) {
+        
              let newClient = await Client.create({ email, name, userId });
         console.log(newClient);
         return res.status(201).send({
             token:`${newClient._id}:${newClient.email}`
         });
-        }
-        else {
-            return res.status(401).send("Already A Client"); 
+
+        // }
+        // else {
+        //     return res.status(401).send("Already A Client"); 
            
-        }
+        // }
         
     }
     catch (e) {
