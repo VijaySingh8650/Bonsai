@@ -14,7 +14,7 @@ app.post("/login", async (req, res) => {
         }
         
        return  res.status(200).send({
-            token:`${checkUser.id}:${checkUser.email}:${checkUser.name}`
+            token:checkUser
         })
        
 
@@ -38,7 +38,7 @@ app.post("/signup", async (req, res) => {
         })
         console.log(newUser);
         res.send({
-            token:`${newUser.id}:${newUser.email}:${newUser.name}`
+            token:checkUser
         })
         
     }

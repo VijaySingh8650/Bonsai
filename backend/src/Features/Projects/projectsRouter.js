@@ -48,12 +48,11 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/", async(req, res)=>{
-    const { projectName, currency ,clientName} = req.body;
     const userId = req.headers.token;
     
     try {
         
-            let newProject = await Project.create({userId, currency, clientName,projectName });
+            let newProject = await Project.create({userId,...req.body});
             console.log(newProject);
         return res.status(201).send({
                 token:`${newProject._id}:${newProject.projectName}`

@@ -67,10 +67,9 @@ app.get("/:id", async (req, res) => {
 
 
 app.post("/", async(req, res)=>{
-    let { email,name} = req.body;
     let userId = req.headers.token;
     try {
-        let newClient = await Client.create({ email, name, userId });
+        let newClient = await Client.create({userId,...req.body});
         console.log(newClient);
         return res.status(201).send({
             token:`${newClient._id}:${newClient.email}`
