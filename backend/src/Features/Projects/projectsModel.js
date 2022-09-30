@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
-    clientId: { type:mongoose.Schema.Types.ObjectId, ref:"client", required:true},
+    userId: { type:mongoose.Schema.Types.ObjectId, ref:"user", required:true},
     projectName: { type: String, required: true},
     currency: { type: Number, required:true, min:40},
+    clientName : {type:String,required:true},
     status:{type:Boolean,default:false}
     
 })

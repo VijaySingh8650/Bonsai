@@ -3,43 +3,41 @@ const Client = require("./clientModel");
 const User = require("../Users/userModel");
 
 const app = express.Router();
-let userId;
 
-const authMiddleWare = async (req, res, next) => {
+// const authMiddleWare = async (req, res, next) => {
     
-    let token = req.headers.token;
-    console.log(token);
+//     let token = req.headers.token;
+//     console.log(token);
 
-    try {
-        if (token) {
-            const [ id, email, name ] = token.split(":");
-        let checkUser = await User.findById(id);
-        // console.log(checkUser, email,id,name);
-        if (checkUser.email===email && checkUser.name===name){
-            userId = id;
-            console.log(id);
-            return next();
-        } else {
-            return res.status(401).send("can not perform this operation");
-        }
-        }
-         else {
-            return res.status(401).send("can not perform this operation");
-        }
+//     try {
+//         if (token) {
+//             const [ id, email, name ] = token.split(":");
+//         let checkUser = await User.findById(id);
+//         // console.log(checkUser, email,id,name);
+//         if (checkUser.email===email && checkUser.name===name){
+//             userId = id;
+//             console.log(id);
+//             return next();
+//         } else {
+//             return res.status(401).send("can not perform this operation");
+//         }
+//         }
+//          else {
+//             return res.status(401).send("can not perform this operation");
+//         }
         
         
-    }
-    catch (e) {
-        res.status(500).send(e.message);
-    }
-}
+//     }
+//     catch (e) {
+//         res.status(500).send(e.message);
+//     }
+// }
 
-app.use(authMiddleWare);
+// app.use(authMiddleWare);
 
 //get the clients
 app.get("/", async (req, res) => {
-    
-
+    const userId = req.headers.token
     try {
         
         const clients = await Client.find({ userId: userId });
@@ -70,22 +68,13 @@ app.get("/:id", async (req, res) => {
 
 app.post("/", async(req, res)=>{
     let { email,name} = req.body;
+    let userId = req.headers.token;
     try {
-        let checkClient = await Client.findOne({userId,name,email});
-        console.log(checkClient);
-        
-        if (!checkClient) {
-             let newClient = await Client.create({ email, name, userId });
+        let newClient = await Client.create({ email, name, userId });
         console.log(newClient);
         return res.status(201).send({
             token:`${newClient._id}:${newClient.email}`
         });
-        }
-        else {
-            return res.status(401).send("Already A Client"); 
-           
-        }
-        
     }
     catch (e) {
         res.status(500).send(e.message);

@@ -3,35 +3,35 @@ const Tasks = require("./tasksModel");
 const Project = require("../Projects/projectsModel");
 
 const app = express.Router();
-let projectId;
-const authMiddleWare = async (req, res, next) => {
+// let projectId;
+// const authMiddleWare = async (req, res, next) => {
     
-    let Token = req.headers.token;
+//     let Token = req.headers.token;
 
-    try {
-        const [ id, projectName] = Token.split(":");
-        let checkProject = await Project.findById(id);
-        // console.log(checkUser, email,id,name);
-        if (checkProject.projectName===projectName){
-            projectId = id;
+//     try {
+//         const [ id, projectName] = Token.split(":");
+//         let checkProject = await Project.findById(id);
+//         // console.log(checkUser, email,id,name);
+//         if (checkProject.projectName===projectName){
+//             projectId = id;
             
-            return next();
-        }
-        return res.status(401).send("can not perform this operation");
-    }
-    catch (e) {
-        res.status(500).send(e.message);
-    }
-}
+//             return next();
+//         }
+//         return res.status(401).send("can not perform this operation");
+//     }
+//     catch (e) {
+//         res.status(500).send(e.message);
+//     }
+// }
 
-app.use(authMiddleWare);
+// app.use(authMiddleWare);
 
 //get the clients
 app.get("/", async (req, res) => {
-
+    const userId = req.headers.token;
     try {
         
-        const tasks = await Tasks.find({ projectId: projectId });
+        const tasks = await Tasks.find({ userId: userId });
         res.send(tasks);
     }
     catch (e) {
@@ -41,10 +41,10 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/", async(req, res)=>{
-    let { task } = req.body;
+    const userId = req.headers.token;
     try {
         
-            let newTasks = await Tasks.create({projectId,task });
+            let newTasks = await Tasks.create({...req.body,userId});
             console.log(newTasks);
             res.status(201).send("Addedd Successfully");
         

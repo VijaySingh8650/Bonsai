@@ -3,38 +3,38 @@ const Client = require("../Clients/clientModel");
 const Project = require("./projectsModel");
 
 const app = express.Router();
-let clientId;
-const authMiddleWare = async (req, res, next) => {
+//let clientId;
+// const authMiddleWare = async (req, res, next) => {
     
-    let token = req.headers.token;
-    console.log(token);
+//     let token = req.headers.token;
+//     console.log(token);
     
-    try {
-        const [id, email] = token.split(":");
-        console.log(id);
-        let checkUser = await Client.findById(id);
-        // console.log(checkUser, email,id,name);
-        if (checkUser.email===email){
-            clientId = id;
-            console.log(id);
+//     try {
+//         const [id, email] = token.split(":");
+//         console.log(id);
+//         let checkUser = await Client.findById(id);
+//         // console.log(checkUser, email,id,name);
+//         if (checkUser.email===email){
+//             clientId = id;
+//             console.log(id);
 
-            return next();
-        }
-        return res.status(401).send("can not perform this operation");
-    }
-    catch (e) {
-        res.status(500).send(e.message);
-    }
-}
+//             return next();
+//         }
+//         return res.status(401).send("can not perform this operation");
+//     }
+//     catch (e) {
+//         res.status(500).send(e.message);
+//     }
+// }
 
-app.use(authMiddleWare);
+// app.use(authMiddleWare);
 
 //get the clients
 app.get("/", async (req, res) => {
-       
+    const userId = req.headers.token
     try {
         
-        const projects = await Project.find({ clientId: clientId });
+        const projects = await Project.find({userId:userId});
         if (projects) {
             
             return res.send(projects);
@@ -48,11 +48,12 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/", async(req, res)=>{
-    const { projectName, currency } = req.body;
+    const { projectName, currency ,clientName} = req.body;
+    const userId = req.headers.token;
     
     try {
         
-            let newProject = await Project.create({ currency, clientId,projectName });
+            let newProject = await Project.create({userId, currency, clientName,projectName });
             console.log(newProject);
         return res.status(201).send({
                 token:`${newProject._id}:${newProject.projectName}`
