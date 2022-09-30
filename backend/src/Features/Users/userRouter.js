@@ -26,7 +26,7 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/signup", async (req, res) => {
-    const { name, email, password } = req.body;
+    const { email } = req.body;
     try {
         let checkUser = await User.findOne({ email });
         console.log(checkUser);
@@ -34,11 +34,11 @@ app.post("/signup", async (req, res) => {
             return res.status(401).send("Registration fails as user already registered");
         }
         let newUser = await User.create({
-            name,email,password
+            ...req.body
         })
         console.log(newUser);
         res.send({
-            token:checkUser
+            token:newUser
         })
         
     }
