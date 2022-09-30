@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const validator = require('validator');
+
 
 //creating schema for signup
 const userSchema = new mongoose.Schema({
