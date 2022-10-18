@@ -15,7 +15,9 @@ const API = process.env.MONGO_URL || "";;
 const app = express();
 app.use(cors({
     origin: '*',
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
+    credentials:true,
+    optionSuccessStatus:200
 }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
