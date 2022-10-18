@@ -14,7 +14,7 @@ const API = process.env.MONGO_URL || "";;
 
 const app = express();
 app.use(cors({
-    origin: 'https://hellobonsai-deploy.vercel.app/',
+    origin: '*',
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 }));
 
