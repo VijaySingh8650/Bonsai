@@ -13,6 +13,7 @@ const API = process.env.MONGO_URL || "";;
 
 
 const app = express();
+app.enable("trust proxy");
 app.use(cors({
     origin: '*',
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
