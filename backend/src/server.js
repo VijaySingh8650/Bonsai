@@ -13,7 +13,11 @@ const API = process.env.MONGO_URL || "";;
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'https://hellobonsai-deploy.vercel.app/',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
+
 app.use(express.json());
 app.use("/users", userRouter);
 app.use("/clients", clientRouter);
